@@ -15,6 +15,7 @@
 
 ## Standalone Miner Compile
 ```
+apt install libomp-dev
 git clone https://github.com/vfcash/Standalone-Miner.git && cd Standalone-Miner
 gcc -Ofast -fopenmp miner.c ecc.c base58.c -lm -o miner.exe
 or with offloading
