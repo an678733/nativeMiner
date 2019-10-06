@@ -5,7 +5,7 @@
 
 ## Project Entry-Points
 * **gminer.c** - Portable GUI Miner & Auto Claim (SDL)
-* **miner.c**  - Just Portable Miner, console.
+* **miner.c**  - Just Portable Miner & Auto Claim, console.
 
 ## Auto-Claim for Windows users
 * **Install WGET** from http://downloads.sourceforge.net/gnuwin32/wget-1.11.4-1-setup.exe
