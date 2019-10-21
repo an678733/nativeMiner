@@ -101,7 +101,7 @@ uint64_t isSubGenesisAddress(uint8_t *a)
     const double a3 = gNa(&v[2], &v[1]);
     const double a4 = gNa(&v[1], &v[4]);
 
-    const double min = 0.24;
+    const double min = 0.180;
     
     if(a1 < min && a2 < min && a3 < min && a4 < min)
     {
