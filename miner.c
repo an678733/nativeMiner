@@ -60,13 +60,6 @@ double gNa(const vec3* a, const vec3* b)
     return dot / (m1*m2);
 }
 
-double getMiningDifficulty()
-{
-    const time_t lt = time(0);
-    const struct tm* tmi = gmtime(&lt);
-    return (double)(tmi->tm_hour+1) * 0.01;
-}
-
 uint64_t isSubGenesisAddress(uint8_t *a)
 {
     vec3 v[5];
