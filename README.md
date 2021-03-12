@@ -13,7 +13,7 @@
 * **minted.txt**  - All minted private keys are appened to this file.
 
 ## Autoclaim mined keys using WGET
-`./miner autoclaim`
+The command line parameter autoclaim must be specified; `./miner autoclaim`
 
 ## Auto-Claim for Windows users
 * **Install WGET** from http://downloads.sourceforge.net/gnuwin32/wget-1.11.4-1-setup.exe
