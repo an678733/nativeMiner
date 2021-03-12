@@ -8,8 +8,8 @@
 * **miner.c**  - Just Portable Miner & Auto Claim, console.
 
 ## Files produced by the miner
-* **rewards.txt** - A new rewards address is generated and appened to rewards.txt each time you start the miner, all claimed addresses during this session will be sent to the newly generated rewards address.
-* **trans.txt**   - All API url calls executed are appended to this file, easy method of re-execution.
+* **rewards.txt** - A new rewards address is generated and appened to rewards.txt each time you start the miner, all claimed addresses during this session will be sent to the newly generated rewards address if the miner has been launched with the `autoclaim` command line parameter.
+* **trans.txt**   - All autoclaim API url calls executed are appended to this file, easy method of re-execution or manual execution.
 * **minted.txt**  - All minted private keys are appened to this file.
 
 ## Autoclaim mined keys using WGET
