@@ -13,6 +13,7 @@
 
 uint8_t rpriv[ECC_BYTES];
 uint8_t rpub[ECC_BYTES+1];
+int autoclaim = 0;
 
 float approx_sqrt(float n)
 {
@@ -164,9 +165,16 @@ double subDiff(uint8_t *a)
 }
 
 
-int main()
+int main(int argc, char* args[])
 {
-    printf("Please wait, minted keys are saved to minted.txt, difficulty 0.24 ...\n");
+    // enable auto claim?
+    if(argc == 2 && strcmp(args[1], "autoclaim") == 0)
+    {
+        autoclaim = 1;
+        printf("Auto claim will attempt to claim all minted.txt to the last key that has been appended to rewards.txt.\n");
+    }
+    
+    printf("Please wait, minted keys are saved to minted.txt, mining at difficulty 0.24 ...\n");
 
     //Save reward addr used today
     ecc_make_key(rpub, rpriv);
@@ -244,10 +252,13 @@ int main()
                 printf("Private Key: %s (%.3f DIFF) (%.3f VFC)\n\n", bpriv, diff, fr);
 
                 //Try to claim
-                char cmd[2048];
-                sprintf(cmd, "wget -qO- \"https://vfcash.uk/rest.php?fromprivfast=%s&frompub=%s&topub=%s&amount=%.3f\"", bpriv, bpub, brpub, fr);
-                if(system(cmd) != -1)
-                    printf("\n%s\n", cmd);
+                if(autoclaim == 1)
+                {
+                    char cmd[2048];
+                    sprintf(cmd, "wget -qO- \"https://vfcash.uk/rest.php?fromprivfast=%s&frompub=%s&topub=%s&amount=%.3f\"", bpriv, bpub, brpub, fr);
+                    if(system(cmd) != -1)
+                        printf("\n%s\n", cmd);
+                }
 
                 //Log claim url
                 FILE* f = fopen("trans.txt", "a");
