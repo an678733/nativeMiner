@@ -15,6 +15,7 @@ const int height = 120;
 uint minted = 0;
 uint8_t rpriv[ECC_BYTES];
 uint8_t rpub[ECC_BYTES+1];
+int autoclaim = 0;
 
 double toDB(const uint64_t b)
 {
@@ -333,11 +334,14 @@ void mine()
     const double fr = toDB(r);
 
     //Try to claim
-    //sendTransaction(priv, rpub, r);
-    char cmd[2048];
-    sprintf(cmd, "wget -qO- \"https://vfcash.uk/rest.php?fromprivfast=%s&frompub=%s&topub=%s&amount=%.3f\"", bpriv, bpub, brpub, fr);
-    if(system(cmd) != -1)
-      printf("\n%s\n", cmd);
+    if(autoclaim == 1)
+    {
+      //sendTransaction(priv, rpub, r);
+      char cmd[2048];
+      sprintf(cmd, "wget -qO- \"https://vfcash.uk/rest.php?fromprivfast=%s&frompub=%s&topub=%s&amount=%.3f\"", bpriv, bpub, brpub, fr);
+      if(system(cmd) != -1)
+        printf("\n%s\n", cmd);
+    }
 
     FILE* f = fopen("trans.txt", "a");
     if(f != NULL)
@@ -362,6 +366,13 @@ void mine()
 
 int main(int argc, char* args[])
 {
+  // enable auto claim?
+  if(argc == 2 && strcmp(args[1], "autoclaim") == 0)
+  {
+    autoclaim = 1;
+    printf("Auto claim will attempt to claim all minted.txt to the last key that has been appended to rewards.txt.\n");
+  }
+
   //Init SDL
   if(SDL_Init(SDL_INIT_VIDEO) < 0)
   {
