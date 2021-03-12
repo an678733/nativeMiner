@@ -23,6 +23,8 @@ The command line parameter autoclaim must be specified; `./miner autoclaim`
 apt install libomp-dev
 git clone https://github.com/vfcash/Standalone-Miner.git && cd Standalone-Miner
 gcc -Ofast -fopenmp miner.c ecc.c base58.c -lm -o miner.exe
+```
+```
 or with offloading
 gcc -Ofast -fopenmp -lomptarget miner.c ecc.c base58.c -lm -o miner.exe
 ```
