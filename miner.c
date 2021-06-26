@@ -174,7 +174,7 @@ int main(int argc, char* args[])
         printf("Auto claim will attempt to claim all minted.txt to the last key that has been appended to rewards.txt.\n");
     }
     
-    printf("Please wait, minted keys are saved to minted.txt, mining at difficulty 0.24 ...\n");
+    printf("Please wait, minted keys are saved to minted.txt, mining at difficulty 0.18 ...\n");
 
     //Save reward addr used today
     ecc_make_key(rpub, rpriv);
