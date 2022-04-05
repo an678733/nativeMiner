@@ -229,14 +229,14 @@ int main(int argc, char *args[])
             // update every x seconds
             if(tid == 0 && time(0) > nt)
             {
-                const uint hs = (c * nthreads) / 16;
+                const uint hs = (c * nthreads) / 333;
 
                 char title[256];
                 sprintf(title, "H/s: %u / C: %d", hs, nthreads);
                 printf("%s\n", title);
 
                 c = 0;
-                nt = time(0) + 16;
+                nt = time(0) + 333;
             }
 
             // mine for a key
