@@ -1,3 +1,7 @@
+// VF CASH - Standalone GUI Miner - August 2019
+// James William Fletcher
+// https://github.com/vfcash
+
 #include <omp.h>
 #include <SDL2/SDL.h>
 // #include <SDL2/SDL_net.h>
