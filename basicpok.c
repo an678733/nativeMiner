@@ -21,7 +21,7 @@ typedef unsigned __int128 uint128_t;
 const uint128_t max = -1; // little trick to get the max range of this datatype
 const uint128_t chance = max / 3033033; // the higher the divisor the higher the difficulty in finding a match
 
-static inline uint128_t isSubGenesisAddress(uint8_t *a)
+static inline uint isSubGenesisAddress(uint8_t *a)
 {
     // split the public key uint256_t (32 bytes) back into two uint128_t (16 bytes each)
     // in ecc.c the key was originally split but the ecc_make_key() function returns
@@ -43,7 +43,7 @@ void mine()
     uint8_t priv[ECC_BYTES];
     uint8_t pub[ECC_BYTES+1];
     ecc_make_key(pub, priv);
-    const uint128_t r = isSubGenesisAddress(pub);
+    const uint r = isSubGenesisAddress(pub);
     if(r != 0)
     {
         char bpriv[256];
