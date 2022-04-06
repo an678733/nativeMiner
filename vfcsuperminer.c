@@ -1,5 +1,6 @@
 // optimised vfc miner
 // clang -Ofast -fopenmp vfcsuperminer.c sha3.c ecc.c base58.c -lm -o vfcsuperminer
+// https://github.com/vfcash
 #include <omp.h>
 #include <stdio.h>
 #include <math.h>
