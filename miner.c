@@ -1,5 +1,6 @@
-//VF CASH - Standalone Miner - August 2019
-//James William Fletcher
+// VF CASH - Standalone Miner - August 2019
+// James William Fletcher
+// https://github.com/vfcash
 
 #include <omp.h>
 #include <stdio.h>
