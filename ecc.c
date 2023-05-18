@@ -5,6 +5,7 @@
 #include "ecc.h"
 
 #include <string.h>
+#include <x86intrin.h>
 
 #define NUM_ECC_DIGITS (ECC_BYTES/8)
 #define MAX_TRIES 16
@@ -106,32 +107,37 @@ static int getRandomNumber(uint64_t *p_vli)
 
 static int getRandomNumber(uint64_t *p_vli)
 {
-    int l_fd = open("/dev/urandom", O_RDONLY | O_CLOEXEC);
-    if(l_fd == -1)
-    {
-        l_fd = open("/dev/random", O_RDONLY | O_CLOEXEC);
-        if(l_fd == -1)
-        {
-            return 0;
-        }
-    }
-    
-    char *l_ptr = (char *)p_vli;
-    size_t l_left = ECC_BYTES;
-    while(l_left > 0)
-    {
-        int l_read = read(l_fd, l_ptr, l_left);
-        if(l_read <= 0)
-        { // read failed
-            close(l_fd);
-            return 0;
-        }
-        l_left -= l_read;
-        l_ptr += l_read;
-    }
-    
-    close(l_fd);
+    unsigned long long s = 0;
+    _rdseed64_step(&s);
+    *p_vli = (uint64_t)s;
     return 1;
+    
+//     int l_fd = open("/dev/urandom", O_RDONLY | O_CLOEXEC);
+//     if(l_fd == -1)
+//     {
+//         l_fd = open("/dev/random", O_RDONLY | O_CLOEXEC);
+//         if(l_fd == -1)
+//         {
+//             return 0;
+//         }
+//     }
+    
+//     char *l_ptr = (char *)p_vli;
+//     size_t l_left = ECC_BYTES;
+//     while(l_left > 0)
+//     {
+//         int l_read = read(l_fd, l_ptr, l_left);
+//         if(l_read <= 0)
+//         { // read failed
+//             close(l_fd);
+//             return 0;
+//         }
+//         l_left -= l_read;
+//         l_ptr += l_read;
+//     }
+    
+//     close(l_fd);
+//     return 1;
 }
 
 #endif /* _WIN32 */
@@ -1091,6 +1097,30 @@ int ecc_make_key(uint8_t p_publicKey[ECC_BYTES+1], uint8_t p_privateKey[ECC_BYTE
 
         EccPoint_mult(&l_public, &curve_G, l_private, NULL);
     } while(EccPoint_isZero(&l_public));
+    
+    ecc_native2bytes(p_privateKey, l_private);
+    ecc_native2bytes(p_publicKey + 1, l_public.x);
+    p_publicKey[0] = 2 + (l_public.y[0] & 0x01);
+    return 1;
+}
+
+int ecc_make_key_seed(uint8_t p_publicKey[ECC_BYTES+1], uint8_t p_privateKey[ECC_BYTES], const uint64_t* seed)
+{
+    uint64_t l_private[NUM_ECC_DIGITS];
+    memcpy(l_private, seed, ECC_BYTES);
+    EccPoint l_public;
+    
+    if(vli_isZero(l_private))
+    {
+        return 0;
+    }
+
+    if(vli_cmp(curve_n, l_private) != 1)
+    {
+        vli_sub(l_private, l_private, curve_n);
+    }
+
+    EccPoint_mult(&l_public, &curve_G, l_private, NULL);
     
     ecc_native2bytes(p_privateKey, l_private);
     ecc_native2bytes(p_publicKey + 1, l_public.x);
